@@ -1,13 +1,12 @@
-/*global it: true, describe: true */
-/*eslint no-console: 0*/
+/* eslint-disable no-magic-numbers */
 
-import should from 'should'
-import { promisify, callbackify } from '../src'
+const should = require('should')
+const { promisify, callbackify } = require('../src')
 
 const flat = () => 123
 const cb = (cb) => cb(null, 123)
 const asyncd = async () => 123
-const promised = () => new Promise((resolve, reject) => resolve(123))
+const promised = () => new Promise((resolve) => resolve(123))
 
 describe('promisify', () => {
   it('should exist', async () => {
@@ -34,24 +33,28 @@ describe('callbackify', () => {
   it('should resolve flat', (done) => {
     callbackify(flat, (err, res) => {
       res.should.equal(123)
+      should.not.exist(err)
       done()
     })
   })
   it('should resolve callbacks', (done) => {
     callbackify(cb, (err, res) => {
       res.should.equal(123)
+      should.not.exist(err)
       done()
     })
   })
   it('should resolve async functions', (done) => {
     callbackify(asyncd, (err, res) => {
       res.should.equal(123)
+      should.not.exist(err)
       done()
     })
   })
   it('should resolve promises', (done) => {
     callbackify(promised, (err, res) => {
       res.should.equal(123)
+      should.not.exist(err)
       done()
     })
   })

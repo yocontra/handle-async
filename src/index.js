@@ -1,8 +1,8 @@
-import once from 'once'
+const once = require('once')
 
 // takes a function or a flat value and returns the resolved value to the callback
 // if a fn, it must return a flat value, a promise, or pass something to a callback
-export const callbackify = (fn, cb) => {
+const callbackify = (fn, cb) => {
   // flat value
   if (typeof fn !== 'function') return cb(null, fn)
 
@@ -26,6 +26,7 @@ export const callbackify = (fn, cb) => {
       return null
     }).catch((err) => {
       wrapped(err)
+      return null
     })
     return
   }
@@ -34,11 +35,13 @@ export const callbackify = (fn, cb) => {
   wrapped(null, res)
 }
 
-export const promisify = (fn) => {
-  return new Promise((resolve, reject) => {
+const promisify = (fn) =>
+  new Promise((resolve, reject) => {
     callbackify(fn, (err, res) => {
       if (err) return reject(err)
       resolve(res)
     })
   })
-}
+
+
+module.exports = { callbackify, promisify }
